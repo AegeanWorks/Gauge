@@ -8,9 +8,9 @@
 ## 📊 Codebase Metrics
 - **Total Python Modules**: `10`
 - **Total Classes**: `19`
-- **Total Top-Level Functions**: `43`
-- **Total Class Methods**: `105`
-- **Total Source Lines**: `1836`
+- **Total Top-Level Functions**: `44`
+- **Total Class Methods**: `108`
+- **Total Source Lines**: `1878`
 
 ---
 
@@ -66,10 +66,11 @@
 ### [`gauge/render.py`](gauge/render.py)
 > *Text renderers: sparklines, signed bar charts and a statistics table.*
 
-**Size**: `224` lines (`8569` bytes)
+**Size**: `250` lines (`9562` bytes)
 
 **Functions:**
 - `def format_number(value)` - *A compact human label for one value, with negative zero folded to zero.*
+- `def _edge_texts(low, high)` - *Labels for one bin's edges, adding digits only when six would collapse them.*
 - `def resample(values, width)` - *`values` unchanged when it already fits, else `width` bucket averages.*
 - `def _ratio(value, low, high)` - *Where `value` sits in [low, high], scaled when the raw span would overflow.*
 - `def _level(value, low, high, levels)` - *The half-up level of `value` between `low` and `high`; a flat series sits in the middle.*
@@ -86,7 +87,7 @@
 ### [`gauge/series.py`](gauge/series.py)
 > *Numeric input parsing, summary statistics and histogram binning for gauge.*
 
-**Size**: `262` lines (`9328` bytes)
+**Size**: `262` lines (`9338` bytes)
 
 **Classes:**
 - `class Summary` - *A series' count, extrema, centre and spread, with a stable JSON shape.*
@@ -160,7 +161,7 @@
 ### [`tests/test_render.py`](tests/test_render.py)
 > *Unit tests for gauge's deterministic text renderers.*
 
-**Size**: `188` lines (`7080` bytes)
+**Size**: `204` lines (`7983` bytes)
 
 **Classes:**
 - `class SparklineTests` - *Eight fixed levels, a flat middle and proportional resampling.*
@@ -191,10 +192,13 @@
   - Method `.test_empty_bins_stay_visible()`
   - Method `.test_the_unicode_block_is_the_default()`
   - Method `.test_a_narrow_width_is_refused()`
+  - Method `.test_edges_that_share_six_digits_stay_distinguishable()`
 - `class BoxPlotRenderTests` - *The box plot renders whiskers, quartiles, median and extrema (ADR-007).*
   - Method `.test_render_box_ascii()`
   - Method `.test_render_box_unicode()`
   - Method `.test_render_box_flat_series()`
+  - Method `.test_a_collapsed_box_still_shows_both_brackets()`
+  - Method `.test_a_box_whose_median_is_the_maximum_keeps_its_right_bracket()`
   - Method `.test_narrow_width_refused()`
 
 ---

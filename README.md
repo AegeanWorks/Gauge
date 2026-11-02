@@ -193,6 +193,7 @@ Errors print the `Error:`, `Why:` and `Fix:` triad so a failing pipeline explain
 gauge/
 ├── .gitignore
 ├── README.md
+├── assets/
 ├── COMMERCIAL.md
 ├── LICENSE
 ├── LICENSES/                 <- REUSE license texts
