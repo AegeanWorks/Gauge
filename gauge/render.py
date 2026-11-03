@@ -139,7 +139,7 @@ def stats_table(summary: Summary) -> str:
         ("mean", format_number(summary.mean)),
         ("median", format_number(summary.median)),
     ]
-    if summary.custom_percentiles is not None:
+    if summary.custom_percentiles:
         for key, val in summary.custom_percentiles.items():
             label = key if key.startswith("p") else f"p{key}"
             rows.append((label, format_number(val)))

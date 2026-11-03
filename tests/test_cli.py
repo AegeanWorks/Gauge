@@ -118,6 +118,22 @@ class GaugeCliTests(unittest.TestCase):
         self.assertIn("cannot read", err)
         self.assertIn("Fix:", err)
 
+    def test_binary_file_decode_is_a_runtime_error(self) -> None:
+        box = tempfile.TemporaryDirectory()
+        self.addCleanup(box.cleanup)
+        path = Path(box.name) / "binary.dat"
+        path.write_bytes(b"\xcd\xff\x00not-utf8\xff")
+        code, _, err = self._run(["stats", "--file", str(path)])
+        self.assertEqual(1, code)
+        self.assertIn("cannot read", err)
+        self.assertIn("Fix:", err)
+
+    def test_empty_file_string_is_refused(self) -> None:
+        code, _, err = self._run(["stats", "--file", "", "--json"], stdin=_FakeStdin("1 2\n"))
+        self.assertEqual(1, code)
+        self.assertIn("cannot read", err)
+        self.assertIn("Fix:", err)
+
     def test_signed_bars_keep_their_axis(self) -> None:
         code, out, _ = self._run(["bars", "-1", "0", "2", "--ascii", "--width", "11"])
         lines = out.splitlines()
@@ -274,6 +290,11 @@ class GaugeCliTests(unittest.TestCase):
         self.assertIn("--width must be between 5 and 1000", err)
         self.assertIn("Why:", err)
         self.assertIn("Fix:", err)
+
+    def test_box_width_one_uses_box_message(self) -> None:
+        code, _, err = self._run(["box", "--width", "1", "1", "2", "3"])
+        self.assertEqual(2, code)
+        self.assertIn("--width must be between 5 and 1000 for box", err)
 
 
 if __name__ == "__main__":

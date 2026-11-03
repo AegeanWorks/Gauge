@@ -78,6 +78,8 @@ def parse_numbers(
     if field is not None:
         if field < 1:
             raise ValueError("field must be 1 or greater.")
+        if delimiter is not None and not delimiter:
+            raise ValueError("delimiter cannot be empty.")
         values: List[float] = []
         for chunk in chunks:
             for raw_line in chunk.splitlines():
@@ -188,12 +190,14 @@ def summarize(values: List[float],
         stdev = min(scale, math.sqrt(variance) * scale)
     custom: Optional[Dict[str, float]] = None
     if percentiles is not None:
-        custom = {}
-        for p in sorted(percentiles):
-            if not 0.0 < p <= 100.0:
-                raise ValueError(f"percentile must be in (0, 100], got {p}.")
-            key = str(int(p)) if p.is_integer() else f"{p:g}"
-            custom[key] = percentile(values, p / 100.0)
+        requested = list(percentiles)
+        if requested:
+            custom = {}
+            for p in sorted(requested):
+                if not 0.0 < p <= 100.0:
+                    raise ValueError(f"percentile must be in (0, 100], got {p}.")
+                key = str(int(p)) if p.is_integer() else f"{p:g}"
+                custom[key] = percentile(values, p / 100.0)
     return Summary(
         count=count,
         total=total,

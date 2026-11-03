@@ -117,6 +117,12 @@ class SummaryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "in \\(0, 100\\]"):
             summarize([1.0, 2.0], percentiles=[105.0])
 
+    def test_empty_percentiles_list_behaves_like_none(self) -> None:
+        summary = summarize([1.0, 2.0], percentiles=[])
+        self.assertIsNone(summary.custom_percentiles)
+        self.assertIn("p90", summary.as_dict())
+        self.assertNotIn("percentiles", summary.as_dict())
+
     def test_an_empty_or_non_finite_series_is_refused(self) -> None:
         with self.assertRaises(ValueError):
             summarize([])
@@ -197,6 +203,10 @@ class FieldAndDelimiterTests(unittest.TestCase):
     def test_empty_delimiter_raises(self) -> None:
         with self.assertRaisesRegex(ValueError, "cannot be empty"):
             parse_numbers(["10 20"], delimiter="")
+
+    def test_field_with_empty_delimiter_is_refused(self) -> None:
+        with self.assertRaisesRegex(ValueError, "cannot be empty"):
+            parse_numbers(["a"], field=1, delimiter="")
 
 
 class BoxPlotTests(unittest.TestCase):

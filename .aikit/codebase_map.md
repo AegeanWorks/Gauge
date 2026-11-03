@@ -9,8 +9,8 @@
 - **Total Python Modules**: `10`
 - **Total Classes**: `19`
 - **Total Top-Level Functions**: `44`
-- **Total Class Methods**: `109`
-- **Total Source Lines**: `1889`
+- **Total Class Methods**: `115`
+- **Total Source Lines**: `1930`
 
 ---
 
@@ -33,7 +33,7 @@
 ### [`gauge/cli.py`](gauge/cli.py)
 > *The gauge command line: read one numeric source, then render or summarize it.*
 
-**Size**: `348` lines (`14034` bytes)
+**Size**: `350` lines (`14116` bytes)
 
 **Classes:**
 - `class InputError` - *A request gauge cannot carry out, carrying the Why/Fix remediation triad.*
@@ -66,7 +66,7 @@
 ### [`gauge/render.py`](gauge/render.py)
 > *Text renderers: sparklines, signed bar charts and a statistics table.*
 
-**Size**: `250` lines (`9562` bytes)
+**Size**: `250` lines (`9550` bytes)
 
 **Functions:**
 - `def format_number(value)` - *A compact human label for one value, with negative zero folded to zero.*
@@ -87,7 +87,7 @@
 ### [`gauge/series.py`](gauge/series.py)
 > *Numeric input parsing, summary statistics and histogram binning for gauge.*
 
-**Size**: `262` lines (`9338` bytes)
+**Size**: `266` lines (`9531` bytes)
 
 **Classes:**
 - `class Summary` - *A series' count, extrema, centre and spread, with a stable JSON shape.*
@@ -114,7 +114,7 @@
 ### [`tests/test_cli.py`](tests/test_cli.py)
 > *Unit tests for the gauge command line: sources, surfaces, refusals and exit codes.*
 
-**Size**: `280` lines (`11678` bytes)
+**Size**: `301` lines (`12605` bytes)
 
 **Classes:**
 - `class _FakeStdin` - *A non-interactive or interactive standard input with fixed text.*
@@ -135,6 +135,8 @@
   - Method `.test_a_non_finite_token_is_refused()`
   - Method `.test_width_outside_the_bounds_is_refused()`
   - Method `.test_a_missing_file_is_a_runtime_error()`
+  - Method `.test_binary_file_decode_is_a_runtime_error()`
+  - Method `.test_empty_file_string_is_refused()`
   - Method `.test_signed_bars_keep_their_axis()`
   - Method `.test_extreme_opposite_signs_summarize_to_finite_values()`
   - Method `.test_an_unrepresentable_sum_is_refused_with_the_triad()`
@@ -156,13 +158,14 @@
   - Method `.test_box_renders_ascii_and_unicode()`
   - Method `.test_box_flat_series()`
   - Method `.test_box_narrow_width_refused()`
+  - Method `.test_box_width_one_uses_box_message()`
 
 ---
 
 ### [`tests/test_render.py`](tests/test_render.py)
 > *Unit tests for gauge's deterministic text renderers.*
 
-**Size**: `204` lines (`7983` bytes)
+**Size**: `208` lines (`8149` bytes)
 
 **Classes:**
 - `class SparklineTests` - *Eight fixed levels, a flat middle and proportional resampling.*
@@ -187,6 +190,7 @@
   - Method `.test_the_table_matches_the_documented_example()`
   - Method `.test_numbers_stay_compact_and_negative_zero_folds()`
   - Method `.test_table_shows_custom_percentiles_aligned()`
+  - Method `.test_empty_percentiles_table_keeps_p90()`
 - `class HistogramRenderTests` - *Bars scale to the largest count and every bin keeps a row.*
   - Method `.test_bars_scale_to_the_largest_count()`
   - Method `.test_a_flat_series_uses_one_compact_label()`
@@ -207,7 +211,7 @@
 ### [`tests/test_series.py`](tests/test_series.py)
 > *Unit tests for gauge's input parsing and summary statistics.*
 
-**Size**: `230` lines (`9745` bytes)
+**Size**: `240` lines (`10223` bytes)
 
 **Classes:**
 - `class ParseNumbersTests` - *One strict reader for positional arguments, files and pipes.*
@@ -233,6 +237,7 @@
   - Method `.test_json_object_has_the_documented_keys()`
   - Method `.test_custom_percentiles_computed_and_included_in_dict()`
   - Method `.test_invalid_custom_percentiles_refused()`
+  - Method `.test_empty_percentiles_list_behaves_like_none()`
   - Method `.test_an_empty_or_non_finite_series_is_refused()`
 - `class HistogramTests` - *The equal-width bin contract recorded in ADR-004.*
   - Method `.test_ten_values_split_evenly_across_five_bins()`
@@ -250,6 +255,7 @@
   - Method `.test_field_out_of_bounds_raises()`
   - Method `.test_invalid_field_raises()`
   - Method `.test_empty_delimiter_raises()`
+  - Method `.test_field_with_empty_delimiter_is_refused()`
 - `class BoxPlotTests` - *The 5-number summary computation (ADR-007).*
   - Method `.test_boxplot_computes_five_number_summary()`
   - Method `.test_boxplot_flat_series()`

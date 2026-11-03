@@ -76,7 +76,7 @@ def _read_file(path_text: str, field: Optional[int] = None,
     path = Path(path_text)
     try:
         with open(path, "r", encoding="utf-8") as handle:
-            return _parse_or_raise(handle, field=field, delimiter=delimiter)
+            text = handle.read()
     except (OSError, UnicodeError) as exc:
         detail = getattr(exc, "strerror", None) or str(exc)
         raise InputError(
@@ -86,13 +86,14 @@ def _read_file(path_text: str, field: Optional[int] = None,
             "check that the path exists and is readable, then run the command again.",
             exit_code=1,
         ) from None
+    return _parse_or_raise([text], field=field, delimiter=delimiter)
 
 
 def _read_values(args: argparse.Namespace) -> List[float]:
     """The series from arguments, `--file` or standard input, in that order of precedence."""
     field = _checked_field(getattr(args, "field", None))
     delimiter = _checked_delimiter(getattr(args, "delimiter", None))
-    if args.values and args.file:
+    if args.values and args.file is not None:
         raise InputError(
             "both positional numbers and --file were given.",
             "two sources could silently disagree about which series is drawn.",
@@ -100,7 +101,7 @@ def _read_values(args: argparse.Namespace) -> List[float]:
         )
     if args.values:
         return _parse_or_raise(args.values, field=field, delimiter=delimiter)
-    if args.file:
+    if args.file is not None:
         return _read_file(args.file, field=field, delimiter=delimiter)
     if sys.stdin is None or sys.stdin.isatty():
         raise InputError(
@@ -211,13 +212,14 @@ def _box(args: argparse.Namespace) -> int:
     """Print a horizontal 5-number box plot and its summary row."""
     values = _read_values(args)
     boxplot = build_boxplot(values)
-    width = _checked_width(args.width, 40)
-    if width < 5:
+    raw = 40 if args.width is None else args.width
+    if not 5 <= raw <= 1000:
         raise InputError(
-            f"--width must be between 5 and 1000 for box, got {width}.",
+            f"--width must be between 5 and 1000 for box, got {raw}.",
             "a box plot needs at least five cells to display whiskers and box boundaries.",
             "choose a width from 5 to 1000, for example --width 40.",
         )
+    width = raw
     print(render_box(boxplot, width, _use_ascii(args.ascii)))
     return 0
 

@@ -119,6 +119,10 @@ class StatsTableTests(unittest.TestCase):
         self.assertIn("p99", table)
         self.assertNotIn("p90", table)
 
+    def test_empty_percentiles_table_keeps_p90(self) -> None:
+        table = stats_table(summarize([1.0, 2.0], percentiles=[]))
+        self.assertIn("p90", table)
+
 
 class HistogramRenderTests(unittest.TestCase):
     """Bars scale to the largest count and every bin keeps a row."""
