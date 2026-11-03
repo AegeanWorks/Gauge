@@ -3,11 +3,13 @@
 import contextlib
 import io
 import json
+import re
 import tempfile
 import unittest
 from pathlib import Path
 from unittest import mock
 
+import gauge
 from gauge.cli import main
 
 
@@ -183,7 +185,16 @@ class GaugeCliTests(unittest.TestCase):
         with contextlib.redirect_stdout(out), self.assertRaises(SystemExit) as raised:
             main(["--version"])
         self.assertEqual(0, raised.exception.code)
-        self.assertIn("gauge 1.2.0", out.getvalue())
+        self.assertIn(f"gauge {gauge.__version__}", out.getvalue())
+        self.assertIn("gauge 1.3.0", out.getvalue())
+
+    def test_version_matches_pyproject_metadata(self) -> None:
+        root = Path(__file__).resolve().parent.parent / "pyproject.toml"
+        text = root.read_text(encoding="utf-8")
+        match = re.search(r'^version\s*=\s*"([^"]+)"', text, re.MULTILINE)
+        self.assertIsNotNone(match, "pyproject.toml must declare version")
+        assert match is not None
+        self.assertEqual(gauge.__version__, match.group(1))
 
     def test_field_and_delimiter_extract_numbers_from_csv(self) -> None:
         csv_text = "service-a,10.0,ok\nservice-b,20.0,ok\nservice-c,30.0,ok\n"

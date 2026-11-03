@@ -9,8 +9,8 @@
 - **Total Python Modules**: `10`
 - **Total Classes**: `19`
 - **Total Top-Level Functions**: `44`
-- **Total Class Methods**: `108`
-- **Total Source Lines**: `1878`
+- **Total Class Methods**: `109`
+- **Total Source Lines**: `1889`
 
 ---
 
@@ -114,7 +114,7 @@
 ### [`tests/test_cli.py`](tests/test_cli.py)
 > *Unit tests for the gauge command line: sources, surfaces, refusals and exit codes.*
 
-**Size**: `269` lines (`11159` bytes)
+**Size**: `280` lines (`11678` bytes)
 
 **Classes:**
 - `class _FakeStdin` - *A non-interactive or interactive standard input with fixed text.*
@@ -145,6 +145,7 @@
   - Method `.test_demo_shows_both_surfaces()`
   - Method `.test_a_legacy_encoding_falls_back_to_ascii()`
   - Method `.test_version_prints_the_package_version()`
+  - Method `.test_version_matches_pyproject_metadata()`
   - Method `.test_field_and_delimiter_extract_numbers_from_csv()`
   - Method `.test_field_out_of_bounds_refused_with_triad()`
   - Method `.test_invalid_field_refused()`

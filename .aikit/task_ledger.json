@@ -1,50 +1,16 @@
 {
   "version": 1,
   "active_task": {
-    "task_id": "gauge-capabilities-v1",
+    "task_id": "gauge-audit-waves",
     "last_phase": "phase 4",
-    "active_phase": 5,
-    "status": "completed",
-    "updated_at": 1792858311.2493427,
-    "completed_at": 1792858316.869761
+    "active_phase": 4,
+    "status": "in_progress",
+    "updated_at": 1793722524.2373211,
+    "owner": "kilo:gauge-audit",
+    "started_by": "kilo:gauge-audit",
+    "continuations": []
   },
   "checkpoints": [
-    {
-      "task_id": "gauge-capabilities-v1",
-      "phase": "phase 2",
-      "phase_num": 2,
-      "description": "[1/4] Plan: add field/delimiter extraction (-f/-d), extended percentiles in stats, and horizontal box plot (gauge box)",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1792833161.6101658,
-      "timestamp_str": "2026-10-24 12:12:41",
-      "impact_assessment": {
-        "why": "Enable users to parse multi-column logs/CSVs directly with -f/-d, view arbitrary quantiles in stats, and visualize 5-number distributions via a horizontal box plot without extra dependencies.",
-        "benefits": "Direct integration into tabular/log pipelines; flexible percentile inspection; compact visual summary of spread and skew; 100% backward-compatible text and JSON contracts.",
-        "risks": "contract: -f, -d, --percentiles, and box subcommand become public interfaces; JSON key additions must not alter existing keys; concurrency: none; dependency: none; state: none.",
-        "mitigation": "Freeze contracts in ADR-005, ADR-006, ADR-007; test edge cases, out-of-bounds fields, invalid delimiters, and flat series; add golden tests and dogfood chaos tests."
-      }
-    },
-    {
-      "task_id": "gauge-capabilities-v1",
-      "phase": "phase 3",
-      "phase_num": 3,
-      "description": "[2/4] Field and delimiter extraction: parse_numbers -f/-d, CLI options, ADR-005, and unit tests",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1792833330.2910552,
-      "timestamp_str": "2026-10-24 12:15:30"
-    },
-    {
-      "task_id": "gauge-capabilities-v1",
-      "phase": "phase 3",
-      "phase_num": 3,
-      "description": "[3/4] Extended percentiles in stats: --percentiles flag, table/JSON integration, ADR-006, and unit tests",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1792833512.316704,
-      "timestamp_str": "2026-10-24 12:18:32"
-    },
     {
       "task_id": "gauge-capabilities-v1",
       "phase": "phase 3",
@@ -232,6 +198,51 @@
       "timestamp": 1793292292.4736495,
       "timestamp_str": "2026-10-29 19:44:52",
       "agent": "opencode"
+    },
+    {
+      "task_id": "gauge-audit-waves",
+      "phase": "phase 2",
+      "phase_num": 2,
+      "description": "[1/3] Plan: audit gauge waves 0,10,20,30 (first 30 in scope) SURVEY+VERIFY+ANALYZE, then minimal failing-first fix and FULL GATES",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793722408.7232552,
+      "timestamp_str": "2026-11-03 19:13:28",
+      "agent": "kilo:gauge-audit",
+      "impact_assessment": {
+        "why": "Audit 34-commit gauge history in wave order and repair verifiable drift without touching other projects",
+        "benefits": "Wave-ordered evidence for each claim; one minimal fix with failing-first test; 5/5 gates green",
+        "risks": "contract: --version and test count are user-visible; dependency: none (stdlib only); concurrency: none (single process); state: none (stateless filter)",
+        "mitigation": "Reproduce every claim via CLI/tests; drop unverifiable; explicit staging never git add .; verify clean before commit; DO NOT PUSH"
+      },
+      "plan_digest": "3939c29e3df68e2a089912e3e7b217f7966032d52e65a32ce245804c5b8e5264"
+    },
+    {
+      "task_id": "gauge-audit-waves",
+      "phase": "phase 3",
+      "phase_num": 3,
+      "description": "[2/3] Implement version alignment 1.3.0 and README test count 100 with failing-first regression test",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793722444.3421192,
+      "timestamp_str": "2026-11-03 19:14:04",
+      "agent": "kilo:gauge-audit"
+    },
+    {
+      "task_id": "gauge-audit-waves",
+      "phase": "phase 4",
+      "phase_num": 4,
+      "description": "[3/3] Waves 0,10,20,30 verified, version 1.3.0 aligned and README 101 tests; checklists: passed",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793722524.2373211,
+      "timestamp_str": "2026-11-03 19:15:24",
+      "agent": "kilo:gauge-audit",
+      "handoff": {
+        "state": "101 tests and 28 dogfood steps pass",
+        "next": "commit without push",
+        "evidence": "aikit check gauge 5/5"
+      }
     }
   ]
 }
