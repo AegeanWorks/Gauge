@@ -1,50 +1,16 @@
 {
   "version": 1,
   "active_task": {
-    "task_id": "gauge-audit-waves",
+    "task_id": "gauge-delta-0e6341e",
     "last_phase": "phase 4",
     "active_phase": 4,
     "status": "in_progress",
-    "updated_at": 1793722524.2373211,
-    "owner": "kilo:gauge-audit",
-    "started_by": "kilo:gauge-audit",
+    "updated_at": 1793786295.7016475,
+    "owner": "kilo:gauge-delta",
+    "started_by": "kilo:gauge-delta",
     "continuations": []
   },
   "checkpoints": [
-    {
-      "task_id": "gauge-capabilities-v1",
-      "phase": "phase 3",
-      "phase_num": 3,
-      "description": "[3/4] Horizontal box plot: gauge box subcommand, 5-number summary, ASCII twin, ADR-007, and tests",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1792858147.4630566,
-      "timestamp_str": "2026-10-24 19:09:07"
-    },
-    {
-      "task_id": "gauge-capabilities-v1",
-      "phase": "phase 4",
-      "phase_num": 4,
-      "description": "[4/4] README, ADR-005..007, 28-step dogfood gate and codebase map are in place; checklists: passed",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1792858311.2493427,
-      "timestamp_str": "2026-10-24 19:11:51",
-      "handoff": {
-        "state": "97 tests and 28 dogfood steps pass",
-        "next": "commit the capabilities and push to origin",
-        "evidence": "aikit check gauge 5/5"
-      }
-    },
-    {
-      "task_id": "gauge-capabilities-v1",
-      "phase": "completed",
-      "phase_num": 5,
-      "description": "Task 'gauge-capabilities-v1' completed successfully.",
-      "status": "completed",
-      "timestamp": 1792858316.869763,
-      "timestamp_str": "2026-10-24 19:11:56"
-    },
     {
       "task_id": "reforge:run-1",
       "phase": "reforge stage 8",
@@ -240,6 +206,51 @@
       "agent": "kilo:gauge-audit",
       "handoff": {
         "state": "101 tests and 28 dogfood steps pass",
+        "next": "commit without push",
+        "evidence": "aikit check gauge 5/5"
+      }
+    },
+    {
+      "task_id": "gauge-delta-0e6341e",
+      "phase": "phase 2",
+      "phase_num": 2,
+      "description": "[1/2] Plan: SURVEY+VERIFY foreign 0e6341e 5 fixes, ANALYZE README 101 vs 107 drift, minimal failing-first docs fix",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793786280.2486262,
+      "timestamp_str": "2026-11-04 12:58:00",
+      "agent": "kilo:gauge-delta",
+      "impact_assessment": {
+        "why": "Delta-review unpushed 0e6341e 5 fixes plus README drift without touching other projects",
+        "benefits": "Evidence-backed verdicts for each fix; README accurate; 5/5 gates green",
+        "risks": "contract: README test count user-visible, version stable; dependency: none stdlib only; concurrency: none single process; state: none stateless filter",
+        "mitigation": "Reproduce each claim via CLI and tests; drop unverifiable; explicit staging never git add .; full gates after fix; DO NOT PUSH"
+      },
+      "plan_digest": "61fe6850f4f31119c03363a835b2a43d6b4ec75fe3fa347d3799341be6950aac"
+    },
+    {
+      "task_id": "gauge-audit-waves",
+      "phase": "superseded",
+      "phase_num": 4,
+      "description": "Superseded by 'gauge-delta-0e6341e' without --complete or --reset",
+      "status": "superseded",
+      "timestamp": 1793786280.2486262,
+      "timestamp_str": "2026-11-04 12:58:00",
+      "agent": "kilo:gauge-delta",
+      "continued_from": "kilo:gauge-audit"
+    },
+    {
+      "task_id": "gauge-delta-0e6341e",
+      "phase": "phase 4",
+      "phase_num": 4,
+      "description": "[2/2] VERIFY 5/5 foreign fixes correct, README 101->107 fixed; checklists: passed",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793786295.7016475,
+      "timestamp_str": "2026-11-04 12:58:15",
+      "agent": "kilo:gauge-delta",
+      "handoff": {
+        "state": "107 tests and 28 dogfood steps pass",
         "next": "commit without push",
         "evidence": "aikit check gauge 5/5"
       }

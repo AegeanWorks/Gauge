@@ -221,7 +221,7 @@ so they never depend on an installed copy.
 
 ## 🧪 Testing and Dogfooding
 
-- `python -m unittest discover -s tests -t .` runs 101 fast unit and command-line tests.
+- `python -m unittest discover -s tests -t .` runs 107 fast unit and command-line tests.
 - `python tools/dogfood.py` uses the product as a user would, including histograms, box plots,
   column extraction and percentiles, then attacks empty input, bad tokens, non-finite values,
   impossible widths, field indices and bin counts, conflicting sources, a missing file, an unknown
