@@ -3,8 +3,8 @@
   "active_task": {
     "task_id": "gauge-dogfood-skip-header",
     "last_phase": "in_progress",
-    "active_phase": 4,
-    "status": "in_progress",
+    "active_phase": 5,
+    "status": "completed",
     "updated_at": 1794654235.144778,
     "owner": "mistral:vibe",
     "started_by": "mistral:vibe",
@@ -14,20 +14,10 @@
       "benefits": "regressions in header parsing now break the dogfood gate",
       "risks": "contract: two added steps only, runner structure unchanged; dependency: none; concurrency: unchanged supervised teardown; state: sandbox only",
       "mitigation": "dogfood run 30/30, map regenerated, gates rerun"
-    }
+    },
+    "completed_at": 1794654273.576153
   },
   "checkpoints": [
-    {
-      "task_id": "reforge:run-1",
-      "phase": "reforge stage 12",
-      "phase_num": 3,
-      "description": "Reforge stage 12: run stopped at stage 12; resume it with `reforge resume`",
-      "files_affected": [],
-      "status": "suspended",
-      "timestamp": 1793292292.4736495,
-      "timestamp_str": "2026-10-29 19:44:52",
-      "agent": "opencode"
-    },
     {
       "task_id": "gauge-audit-waves",
       "phase": "phase 2",
@@ -312,6 +302,22 @@
         "mitigation": "dogfood run 30/30, map regenerated, gates rerun"
       },
       "checklists": "passed"
+    },
+    {
+      "task_id": "gauge-dogfood-skip-header",
+      "phase": "completed",
+      "phase_num": 5,
+      "description": "Task 'gauge-dogfood-skip-header' completed successfully.",
+      "status": "completed",
+      "timestamp": 1794654273.5761552,
+      "timestamp_str": "2026-11-14 14:04:33",
+      "agent": "mistral:vibe",
+      "delivery": {
+        "roots": [
+          "C:\\Users\\Yunus-Emre\\Desktop\\portable_agent_kit\\projects\\gauge"
+        ],
+        "forced": false
+      }
     }
   ]
 }
