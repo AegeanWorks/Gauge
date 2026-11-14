@@ -10,6 +10,8 @@ A zero-dependency terminal ruler for numeric series. `gauge` reads numbers from 
 file or a pipe and draws a sparkline, signed bars, a histogram, a box plot or a compact
 statistics block. `stats --json` is the machine surface for another tool.
 
+> **Archived**: skip-header feature, reforge audit and dogfood coverage delivered and published; campaign concluded (archived 2026-11-14). This project is read-only; its GitHub repository is archived.
+
 It is deliberately small: one short-lived process, no configuration, no network access and no
 stored state.
 
