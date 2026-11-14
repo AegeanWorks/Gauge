@@ -246,6 +246,7 @@ python aikit.py check gauge
 - [ADR-006](.aikit/decisions.md): extended percentiles on summary statistics.
 - [ADR-007](.aikit/decisions.md): horizontal 5-number box plot with deterministic glyphs and ASCII twin.
 - [ADR-008](.aikit/decisions.md): header skipping for file and pipe sources.
+- [ADR-009](.aikit/decisions.md): file sources deliver one line per chunk.
 
 ### Deliberate limits
 

@@ -154,6 +154,32 @@ class GaugeCliTests(unittest.TestCase):
         self.assertIn("2.5", out)
         self.assertNotIn("name", out)
 
+    def test_delimiter_file_mode_matches_the_pipe_path(self) -> None:
+        text = "10\n20\n30\n"
+        box = tempfile.TemporaryDirectory()
+        self.addCleanup(box.cleanup)
+        path = Path(box.name) / "points.csv"
+        path.write_text(text, encoding="utf-8")
+        file_code, file_out, _ = self._run(["stats", "--file", str(path), "--delimiter", ","])
+        pipe_code, pipe_out, _ = self._run(["stats", "--delimiter", ","],
+                                           stdin=_FakeStdin(text))
+        self.assertEqual(0, file_code)
+        self.assertEqual(file_out, pipe_out)
+
+    def test_delimiter_file_mode_with_skip_header_matches_the_pipe_path(self) -> None:
+        text = "ms\n10\n20\n30\n"
+        box = tempfile.TemporaryDirectory()
+        self.addCleanup(box.cleanup)
+        path = Path(box.name) / "points.csv"
+        path.write_text(text, encoding="utf-8")
+        file_code, file_out, _ = self._run(["stats", "--file", str(path), "--delimiter", ",",
+                                            "--skip-header"])
+        pipe_code, pipe_out, _ = self._run(["stats", "--delimiter", ",", "--skip-header"],
+                                           stdin=_FakeStdin(text))
+        self.assertEqual(0, pipe_code)
+        self.assertEqual(file_code, pipe_code)
+        self.assertEqual(file_out, pipe_out)
+
     def test_skip_header_with_positional_values_is_refused(self) -> None:
         code, _, err = self._run(["stats", "1", "2", "--skip-header"])
         self.assertEqual(2, code)

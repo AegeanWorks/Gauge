@@ -68,6 +68,13 @@ contract, a dependency, a data format or the architecture; IDs are consecutive a
 - **Decision**: Add `--skip-header` to every input-reading subcommand via the shared source options. `parse_numbers` gains `skip_header=False`; when set, exactly the first source line is dropped before field, delimiter or whitespace parsing, even when a line break falls between chunks. Combined with positional numbers the flag is refused with the triad (exit 2), because arguments carry no lines to skip. Default behavior is unchanged.
 - **Consequences**: Headered tables and CSVs parse directly. A header-only source still fails with the "no numbers were provided" error rather than silently returning an empty chart. In delimiter mode the reader still expects one line per chunk, matching the existing pipe behavior.
 
+### ADR-009: File sources deliver one line per chunk
+- **Date**: 2026-11-14
+- **Status**: Accepted
+- **Context**: `_read_file` handed the whole file to `parse_numbers` as a single chunk. Field mode splits each chunk into lines first, so `-f` worked on files, but delimiter mode without `-f` split the raw text by the delimiter and produced newline-spanning tokens, refusing multi-row files that the identical bytes through a pipe parse fine. The two source paths disagreed.
+- **Decision**: `_read_file` hands the file to the parser one line per chunk (`splitlines`), matching a standard-input pipe. Chunking is now a parity contract, not a per-path implementation detail; `skip_header` drops exactly one line on either path.
+- **Consequences**: `--file` with `--delimiter` (without `-f`) now parses multi-row files. Field mode, whitespace mode, CRLF files and header-only refusals behave exactly as before. A pipe and a file holding the same bytes now produce identical output for every option combination.
+
 ## Licensing migration (v1.2.0-agpl)
 
 - New versions use the Aegean License 1.1 (AL-1.1); versions up to and including `v1.2.0-agpl` remain under GNU AGPL-3.0.

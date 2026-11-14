@@ -9,8 +9,8 @@
 - **Total Python Modules**: `10`
 - **Total Classes**: `19`
 - **Total Top-Level Functions**: `45`
-- **Total Class Methods**: `123`
-- **Total Source Lines**: `2020`
+- **Total Class Methods**: `125`
+- **Total Source Lines**: `2050`
 
 ## 🧭 Map Coverage
 - **Indexed**: python (`10` module(s))
@@ -37,7 +37,7 @@
 ### [`gauge/cli.py`](gauge/cli.py)
 > *The gauge command line: read one numeric source, then render or summarize it.*
 
-**Size**: `369` lines (`15248` bytes)
+**Size**: `373` lines (`15404` bytes)
 
 **Classes:**
 - `class InputError` - *A request gauge cannot carry out, carrying the Why/Fix remediation triad.*
@@ -119,7 +119,7 @@
 ### [`tests/test_cli.py`](tests/test_cli.py)
 > *Unit tests for the gauge command line: sources, surfaces, refusals and exit codes.*
 
-**Size**: `327` lines (`13767` bytes)
+**Size**: `353` lines (`15103` bytes)
 
 **Classes:**
 - `class _FakeStdin` - *A non-interactive or interactive standard input with fixed text.*
@@ -144,6 +144,8 @@
   - Method `.test_empty_file_string_is_refused()`
   - Method `.test_skip_header_reads_a_headered_csv_file_by_field()`
   - Method `.test_skip_header_skips_the_first_piped_line()`
+  - Method `.test_delimiter_file_mode_matches_the_pipe_path()`
+  - Method `.test_delimiter_file_mode_with_skip_header_matches_the_pipe_path()`
   - Method `.test_skip_header_with_positional_values_is_refused()`
   - Method `.test_signed_bars_keep_their_axis()`
   - Method `.test_extreme_opposite_signs_summarize_to_finite_values()`

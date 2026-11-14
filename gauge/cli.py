@@ -75,7 +75,11 @@ def _parse_or_raise(chunks, field: Optional[int] = None,
 def _read_file(path_text: str, field: Optional[int] = None,
                delimiter: Optional[str] = None,
                skip_header: bool = False) -> List[float]:
-    """Numbers from one UTF-8 file, with a read failure reported as a runtime error."""
+    """Numbers from one UTF-8 file, with a read failure reported as a runtime error.
+
+    The text is handed to the parser one line per chunk so every source matches the
+    piped path, whose chunks are already single lines.
+    """
     path = Path(path_text)
     try:
         with open(path, "r", encoding="utf-8") as handle:
@@ -92,7 +96,7 @@ def _read_file(path_text: str, field: Optional[int] = None,
             "check that the path exists and is readable, then run the command again.",
             exit_code=1,
         ) from None
-    return _parse_or_raise([text], field=field, delimiter=delimiter,
+    return _parse_or_raise(text.splitlines(), field=field, delimiter=delimiter,
                            skip_header=skip_header)
 
 
