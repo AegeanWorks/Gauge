@@ -3,8 +3,8 @@
   "active_task": {
     "task_id": "gauge-skip-header",
     "last_phase": "in_progress",
-    "active_phase": 4,
-    "status": "in_progress",
+    "active_phase": 5,
+    "status": "completed",
     "updated_at": 1794652877.9869258,
     "owner": "mistral:vibe",
     "started_by": "mistral:vibe",
@@ -14,20 +14,10 @@
       "benefits": "one flag covers spark/bars/hist/box/stats; default behavior byte-identical",
       "risks": "state: README/map/ADR must ride the same commit; contract: parse_numbers keyword default False keeps call sites unchanged",
       "mitigation": "failing-first tests proved the gap (8 errors), full triad refusal tested, gates rerun"
-    }
+    },
+    "completed_at": 1794652914.2150385
   },
   "checkpoints": [
-    {
-      "task_id": "reforge:run-1",
-      "phase": "reforge stage 10",
-      "phase_num": 3,
-      "description": "Reforge stage 10: run stopped at stage 10; resume it with `reforge resume`",
-      "files_affected": [],
-      "status": "suspended",
-      "timestamp": 1793292092.3052835,
-      "timestamp_str": "2026-10-29 19:41:32",
-      "agent": "opencode"
-    },
     {
       "task_id": "reforge:run-1",
       "phase": "reforge stage 10",
@@ -274,6 +264,22 @@
         "mitigation": "failing-first tests proved the gap (8 errors), full triad refusal tested, gates rerun"
       },
       "checklists": "passed"
+    },
+    {
+      "task_id": "gauge-skip-header",
+      "phase": "completed",
+      "phase_num": 5,
+      "description": "Task 'gauge-skip-header' completed successfully.",
+      "status": "completed",
+      "timestamp": 1794652914.2150407,
+      "timestamp_str": "2026-11-14 13:41:54",
+      "agent": "mistral:vibe",
+      "delivery": {
+        "roots": [
+          "C:\\Users\\Yunus-Emre\\Desktop\\portable_agent_kit\\projects\\gauge"
+        ],
+        "forced": false
+      }
     }
   ]
 }
