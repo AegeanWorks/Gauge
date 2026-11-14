@@ -13,50 +13,6 @@
   "checkpoints": [
     {
       "task_id": "reforge:run-1",
-      "phase": "reforge stage 8",
-      "phase_num": 3,
-      "description": "Reforge stage 8: window 24, 3 commit(s), 17 file(s) reviewed (unreviewed), 0 finding(s), 0 repaired",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793291734.950546,
-      "timestamp_str": "2026-10-29 19:35:34",
-      "agent": "opencode"
-    },
-    {
-      "task_id": "reforge:run-1",
-      "phase": "reforge stage 8",
-      "phase_num": 3,
-      "description": "Reforge stage 8: run stopped at stage 8; resume it with `reforge resume`",
-      "files_affected": [],
-      "status": "suspended",
-      "timestamp": 1793291819.258143,
-      "timestamp_str": "2026-10-29 19:36:59",
-      "agent": "opencode"
-    },
-    {
-      "task_id": "reforge:run-1",
-      "phase": "reforge stage 8",
-      "phase_num": 3,
-      "description": "Reforge stage 8: run resumed",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793292012.5777187,
-      "timestamp_str": "2026-10-29 19:40:12",
-      "agent": "opencode"
-    },
-    {
-      "task_id": "reforge:run-1",
-      "phase": "reforge stage 9",
-      "phase_num": 3,
-      "description": "Reforge stage 9: window 26, 2 commit(s), 4 file(s) reviewed (unreviewed), 0 finding(s), 0 repaired",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793292019.6735306,
-      "timestamp_str": "2026-10-29 19:40:19",
-      "agent": "opencode"
-    },
-    {
-      "task_id": "reforge:run-1",
       "phase": "reforge stage 9",
       "phase_num": 3,
       "description": "Reforge stage 9: run stopped at stage 9; resume it with `reforge resume`",
@@ -254,6 +210,50 @@
         "next": "commit without push",
         "evidence": "aikit check gauge 5/5"
       }
+    },
+    {
+      "task_id": "reforge:run-1",
+      "phase": "reforge stage 12",
+      "phase_num": 3,
+      "description": "Reforge stage 12: run resumed",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794650917.0095005,
+      "timestamp_str": "2026-11-14 13:08:37",
+      "agent": "unidentified"
+    },
+    {
+      "task_id": "reforge:run-1",
+      "phase": "reforge stage 13",
+      "phase_num": 3,
+      "description": "Reforge stage 13: window 37, 7 commit(s), 13 file(s) reviewed (unreviewed), 0 finding(s), 0 repaired, empty \u2014 nothing to commit",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794651267.1991403,
+      "timestamp_str": "2026-11-14 13:14:27",
+      "agent": "unidentified"
+    },
+    {
+      "task_id": "reforge:run-1",
+      "phase": "reforge stage 13",
+      "phase_num": 3,
+      "description": "Reforge stage 13: stage 13 host review partial; run active; coverage 34/44",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794651533.9173539,
+      "timestamp_str": "2026-11-14 13:18:53",
+      "agent": "unidentified"
+    },
+    {
+      "task_id": "reforge:run-1",
+      "phase": "reforge stage 13",
+      "phase_num": 3,
+      "description": "Reforge stage 13: stage 13 host review reviewed; run completed; coverage 44/44",
+      "files_affected": [],
+      "status": "completed",
+      "timestamp": 1794651666.6412222,
+      "timestamp_str": "2026-11-14 13:21:06",
+      "agent": "unidentified"
     }
   ]
 }
