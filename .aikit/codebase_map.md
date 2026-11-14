@@ -8,9 +8,9 @@
 ## 📊 Codebase Metrics
 - **Total Python Modules**: `10`
 - **Total Classes**: `19`
-- **Total Top-Level Functions**: `44`
-- **Total Class Methods**: `115`
-- **Total Source Lines**: `1933`
+- **Total Top-Level Functions**: `45`
+- **Total Class Methods**: `123`
+- **Total Source Lines**: `2020`
 
 ## 🧭 Map Coverage
 - **Indexed**: python (`10` module(s))
@@ -37,7 +37,7 @@
 ### [`gauge/cli.py`](gauge/cli.py)
 > *The gauge command line: read one numeric source, then render or summarize it.*
 
-**Size**: `353` lines (`14360` bytes)
+**Size**: `369` lines (`15248` bytes)
 
 **Classes:**
 - `class InputError` - *A request gauge cannot carry out, carrying the Why/Fix remediation triad.*
@@ -46,8 +46,8 @@
 **Functions:**
 - `def _checked_field(field)` - *The requested field index, bounded to positive integers.*
 - `def _checked_delimiter(delimiter)` - *The requested delimiter, which cannot be empty.*
-- `def _parse_or_raise(chunks, field, delimiter)` - *Parse chunks, translating a series error into the command-line triad.*
-- `def _read_file(path_text, field, delimiter)` - *Numbers from one UTF-8 file, with a read failure reported as a runtime error.*
+- `def _parse_or_raise(chunks, field, delimiter, skip_header)` - *Parse chunks, translating a series error into the command-line triad.*
+- `def _read_file(path_text, field, delimiter, skip_header)` - *Numbers from one UTF-8 file, with a read failure reported as a runtime error.*
 - `def _read_values(args)` - *The series from arguments, `--file` or standard input, in that order of precedence.*
 - `def _checked_width(width, default)` - *The requested chart width, bounded so every row stays renderable.*
 - `def _checked_bins(bins)` - *The requested bin count, bounded so every row stays readable.*
@@ -91,7 +91,7 @@
 ### [`gauge/series.py`](gauge/series.py)
 > *Numeric input parsing, summary statistics and histogram binning for gauge.*
 
-**Size**: `266` lines (`9531` bytes)
+**Size**: `287` lines (`10333` bytes)
 
 **Classes:**
 - `class Summary` - *A series' count, extrema, centre and spread, with a stable JSON shape.*
@@ -100,7 +100,8 @@
 - `class BoxPlot` - *The 5-number summary: minimum, lower quartile, median, upper quartile, maximum.*
 
 **Functions:**
-- `def parse_numbers(chunks, field, delimiter)` - *Every finite number in text chunks, in order.*
+- `def _drop_first_line(chunks)` - *The chunks with the first source line removed, so a header row is skipped.*
+- `def parse_numbers(chunks, field, delimiter, skip_header)` - *Every finite number in text chunks, in order.*
 - `def percentile(values, fraction)` - *The nearest-rank percentile: the ceil(fraction * n)-th smallest value.*
 - `def summarize(values, percentiles)` - *The summary of a non-empty finite series.*
 - `def build_histogram(values, bins)` - *Equal-width bins over [min, max], right-open except the last, which is closed.*
@@ -118,7 +119,7 @@
 ### [`tests/test_cli.py`](tests/test_cli.py)
 > *Unit tests for the gauge command line: sources, surfaces, refusals and exit codes.*
 
-**Size**: `301` lines (`12605` bytes)
+**Size**: `327` lines (`13767` bytes)
 
 **Classes:**
 - `class _FakeStdin` - *A non-interactive or interactive standard input with fixed text.*
@@ -141,6 +142,9 @@
   - Method `.test_a_missing_file_is_a_runtime_error()`
   - Method `.test_binary_file_decode_is_a_runtime_error()`
   - Method `.test_empty_file_string_is_refused()`
+  - Method `.test_skip_header_reads_a_headered_csv_file_by_field()`
+  - Method `.test_skip_header_skips_the_first_piped_line()`
+  - Method `.test_skip_header_with_positional_values_is_refused()`
   - Method `.test_signed_bars_keep_their_axis()`
   - Method `.test_extreme_opposite_signs_summarize_to_finite_values()`
   - Method `.test_an_unrepresentable_sum_is_refused_with_the_triad()`
@@ -215,7 +219,7 @@
 ### [`tests/test_series.py`](tests/test_series.py)
 > *Unit tests for gauge's input parsing and summary statistics.*
 
-**Size**: `240` lines (`10223` bytes)
+**Size**: `264` lines (`11500` bytes)
 
 **Classes:**
 - `class ParseNumbersTests` - *One strict reader for positional arguments, files and pipes.*
@@ -225,6 +229,11 @@
   - Method `.test_a_non_numeric_token_is_named()`
   - Method `.test_non_finite_values_are_refused()`
   - Method `.test_empty_input_is_refused()`
+  - Method `.test_skip_header_drops_the_first_line_of_the_first_chunk()`
+  - Method `.test_skip_header_with_field_reads_the_first_data_row()`
+  - Method `.test_skip_header_in_delimiter_mode_drops_the_header_line_only()`
+  - Method `.test_skip_header_spans_chunks_and_drops_one_line_total()`
+  - Method `.test_a_header_only_source_still_refuses_with_no_numbers()`
 - `class PercentileTests` - *The nearest-rank definition recorded in ADR-002.*
   - Method `.test_p90_is_the_ninth_of_ten_values()`
   - Method `.test_a_single_value_is_its_own_percentile()`

@@ -134,6 +134,32 @@ class GaugeCliTests(unittest.TestCase):
         self.assertIn("cannot read", err)
         self.assertIn("Fix:", err)
 
+    def test_skip_header_reads_a_headered_csv_file_by_field(self) -> None:
+        box = tempfile.TemporaryDirectory()
+        self.addCleanup(box.cleanup)
+        path = Path(box.name) / "latency.csv"
+        path.write_text("name,ms\na,10\nb,20\nc,30\n", encoding="utf-8")
+        code, out, _ = self._run(["stats", "--file", str(path), "--field", "2",
+                                  "--delimiter", ",", "--skip-header"])
+        self.assertEqual(0, code)
+        self.assertIn("mean", out)
+        self.assertIn("20", out)
+        self.assertNotIn("name", out)
+
+    def test_skip_header_skips_the_first_piped_line(self) -> None:
+        code, out, _ = self._run(["stats", "--skip-header"],
+                                 stdin=_FakeStdin("name ms\n1 2\n3 4\n"))
+        self.assertEqual(0, code)
+        self.assertIn("mean", out)
+        self.assertIn("2.5", out)
+        self.assertNotIn("name", out)
+
+    def test_skip_header_with_positional_values_is_refused(self) -> None:
+        code, _, err = self._run(["stats", "1", "2", "--skip-header"])
+        self.assertEqual(2, code)
+        self.assertIn("Why:", err)
+        self.assertIn("Fix:", err)
+
     def test_signed_bars_keep_their_axis(self) -> None:
         code, out, _ = self._run(["bars", "-1", "0", "2", "--ascii", "--width", "11"])
         lines = out.splitlines()

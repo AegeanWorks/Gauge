@@ -57,10 +57,12 @@ def _checked_delimiter(delimiter: Optional[str]) -> Optional[str]:
 
 
 def _parse_or_raise(chunks, field: Optional[int] = None,
-                    delimiter: Optional[str] = None) -> List[float]:
+                    delimiter: Optional[str] = None,
+                    skip_header: bool = False) -> List[float]:
     """Parse chunks, translating a series error into the command-line triad."""
     try:
-        return parse_numbers(chunks, field=field, delimiter=delimiter)
+        return parse_numbers(chunks, field=field, delimiter=delimiter,
+                             skip_header=skip_header)
     except ValueError as exc:
         raise InputError(
             str(exc),
@@ -71,7 +73,8 @@ def _parse_or_raise(chunks, field: Optional[int] = None,
 
 
 def _read_file(path_text: str, field: Optional[int] = None,
-               delimiter: Optional[str] = None) -> List[float]:
+               delimiter: Optional[str] = None,
+               skip_header: bool = False) -> List[float]:
     """Numbers from one UTF-8 file, with a read failure reported as a runtime error."""
     path = Path(path_text)
     try:
@@ -89,30 +92,41 @@ def _read_file(path_text: str, field: Optional[int] = None,
             "check that the path exists and is readable, then run the command again.",
             exit_code=1,
         ) from None
-    return _parse_or_raise([text], field=field, delimiter=delimiter)
+    return _parse_or_raise([text], field=field, delimiter=delimiter,
+                           skip_header=skip_header)
 
 
 def _read_values(args: argparse.Namespace) -> List[float]:
     """The series from arguments, `--file` or standard input, in that order of precedence."""
     field = _checked_field(getattr(args, "field", None))
     delimiter = _checked_delimiter(getattr(args, "delimiter", None))
+    skip_header = bool(getattr(args, "skip_header", False))
     if args.values and args.file is not None:
         raise InputError(
             "both positional numbers and --file were given.",
             "two sources could silently disagree about which series is drawn.",
             "keep the positional numbers or --file, not both.",
         )
+    if args.values and skip_header:
+        raise InputError(
+            "--skip-header discards the first source line, but positional numbers have none.",
+            "a header exists only in a file or a piped table; a number named on the command "
+            "line is already data.",
+            "drop --skip-header, or move the numbers into a file or a pipe and rerun.",
+        )
     if args.values:
         return _parse_or_raise(args.values, field=field, delimiter=delimiter)
     if args.file is not None:
-        return _read_file(args.file, field=field, delimiter=delimiter)
+        return _read_file(args.file, field=field, delimiter=delimiter,
+                          skip_header=skip_header)
     if sys.stdin is None or sys.stdin.isatty():
         raise InputError(
             "no numbers to read.",
             "an interactive terminal supplies no piped data, and gauge never prompts.",
             "pass numbers as arguments, use --file PATH, or pipe numbers on standard input.",
         )
-    return _parse_or_raise(sys.stdin, field=field, delimiter=delimiter)
+    return _parse_or_raise(sys.stdin, field=field, delimiter=delimiter,
+                           skip_header=skip_header)
 
 
 def _checked_width(width: Optional[int], default: int) -> int:
@@ -269,6 +283,8 @@ def _add_input_options(parser: argparse.ArgumentParser) -> None:
                         help="extract the N-th column (1-indexed)")
     parser.add_argument("-d", "--delimiter", default=None, metavar="CHAR",
                         help="column delimiter (default: whitespace and commas)")
+    parser.add_argument("--skip-header", action="store_true",
+                        help="drop the first source line, a CSV or table header")
 
 
 def build_parser() -> argparse.ArgumentParser:

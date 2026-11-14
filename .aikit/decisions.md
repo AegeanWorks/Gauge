@@ -61,6 +61,13 @@ contract, a dependency, a data format or the architecture; IDs are consecutive a
 - **Decision**: Add `box` subcommand. `build_boxplot` computes the 5-number summary using nearest-rank percentiles for Q1 (0.25) and Q3 (0.75) and the averaged even median. `render_box` renders a horizontal ruler across `--width` cells (default 40, minimum 5) using Unicode `├─[═│═]─┤` and ASCII `|-[=|=]-|`, followed by a line listing the 5 numbers. A flat series renders as `[value]`.
 - **Consequences**: Adds a sixth subcommand without changing any existing contract. Golden tests pin the rendering across widths and flat series.
 
+### ADR-008: Header skipping for file and pipe sources
+- **Date**: 2026-11-14
+- **Status**: Accepted
+- **Context**: CSV and tabular exports usually carry a header row, but parse_numbers treats a header's first token as data and refuses the whole source. Piping through `tail -n +2` works but is not discoverable.
+- **Decision**: Add `--skip-header` to every input-reading subcommand via the shared source options. `parse_numbers` gains `skip_header=False`; when set, exactly the first source line is dropped before field, delimiter or whitespace parsing, even when a line break falls between chunks. Combined with positional numbers the flag is refused with the triad (exit 2), because arguments carry no lines to skip. Default behavior is unchanged.
+- **Consequences**: Headered tables and CSVs parse directly. A header-only source still fails with the "no numbers were provided" error rather than silently returning an empty chart. In delimiter mode the reader still expects one line per chunk, matching the existing pipe behavior.
+
 ## Licensing migration (v1.2.0-agpl)
 
 - New versions use the Aegean License 1.1 (AL-1.1); versions up to and including `v1.2.0-agpl` remain under GNU AGPL-3.0.

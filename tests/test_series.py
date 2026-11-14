@@ -32,6 +32,30 @@ class ParseNumbersTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "no numbers were provided"):
             parse_numbers(["", "  ", ","])
 
+    def test_skip_header_drops_the_first_line_of_the_first_chunk(self) -> None:
+        self.assertEqual([1.0, 2.0, 3.0, 4.0],
+                         parse_numbers(["label ms\n1 2\n3 4"], skip_header=True))
+
+    def test_skip_header_with_field_reads_the_first_data_row(self) -> None:
+        self.assertEqual([10.0, 30.0],
+                         parse_numbers(["name,ms\na,10\nb,30"], field=2, delimiter=",",
+                                       skip_header=True))
+
+    def test_skip_header_in_delimiter_mode_drops_the_header_line_only(self) -> None:
+        self.assertEqual([1.0, 2.0],
+                         parse_numbers(["name,\n", "1,\n", "2,\n"], delimiter=",",
+                                       skip_header=True))
+
+    def test_skip_header_spans_chunks_and_drops_one_line_total(self) -> None:
+        self.assertEqual([1.0, 2.0, 3.0, 4.0],
+                         parse_numbers(["head\n1\n", "2\n3 4"], skip_header=True))
+        self.assertEqual([1.0, 2.0],
+                         parse_numbers(iter(["head", "1 2"]), skip_header=True))
+
+    def test_a_header_only_source_still_refuses_with_no_numbers(self) -> None:
+        with self.assertRaisesRegex(ValueError, "no numbers were provided"):
+            parse_numbers(["name,ms"], skip_header=True)
+
 
 class PercentileTests(unittest.TestCase):
     """The nearest-rank definition recorded in ADR-002."""

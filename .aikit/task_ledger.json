@@ -1,49 +1,22 @@
 {
   "version": 1,
   "active_task": {
-    "task_id": "gauge-delta-0e6341e",
-    "last_phase": "phase 4",
+    "task_id": "gauge-skip-header",
+    "last_phase": "in_progress",
     "active_phase": 4,
     "status": "in_progress",
-    "updated_at": 1793786295.7016475,
-    "owner": "kilo:gauge-delta",
-    "started_by": "kilo:gauge-delta",
-    "continuations": []
+    "updated_at": 1794652877.9869258,
+    "owner": "mistral:vibe",
+    "started_by": "mistral:vibe",
+    "continuations": [],
+    "impact_assessment": {
+      "why": "headered CSVs and tables failed on their first token before this flag",
+      "benefits": "one flag covers spark/bars/hist/box/stats; default behavior byte-identical",
+      "risks": "state: README/map/ADR must ride the same commit; contract: parse_numbers keyword default False keeps call sites unchanged",
+      "mitigation": "failing-first tests proved the gap (8 errors), full triad refusal tested, gates rerun"
+    }
   },
   "checkpoints": [
-    {
-      "task_id": "reforge:run-1",
-      "phase": "reforge stage 9",
-      "phase_num": 3,
-      "description": "Reforge stage 9: run stopped at stage 9; resume it with `reforge resume`",
-      "files_affected": [],
-      "status": "suspended",
-      "timestamp": 1793292044.1472409,
-      "timestamp_str": "2026-10-29 19:40:44",
-      "agent": "opencode"
-    },
-    {
-      "task_id": "reforge:run-1",
-      "phase": "reforge stage 9",
-      "phase_num": 3,
-      "description": "Reforge stage 9: run resumed",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793292067.2310472,
-      "timestamp_str": "2026-10-29 19:41:07",
-      "agent": "opencode"
-    },
-    {
-      "task_id": "reforge:run-1",
-      "phase": "reforge stage 10",
-      "phase_num": 3,
-      "description": "Reforge stage 10: window 28, 2 commit(s), 1 file(s) reviewed (unreviewed), 0 finding(s), 0 repaired",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793292075.8259118,
-      "timestamp_str": "2026-10-29 19:41:15",
-      "agent": "opencode"
-    },
     {
       "task_id": "reforge:run-1",
       "phase": "reforge stage 10",
@@ -254,6 +227,53 @@
       "timestamp": 1794651666.6412222,
       "timestamp_str": "2026-11-14 13:21:06",
       "agent": "unidentified"
+    },
+    {
+      "task_id": "gauge-skip-header",
+      "phase": "in_progress",
+      "phase_num": 2,
+      "description": "[1/2] Plan: --skip-header for file/pipe sources (failing-first tests first)",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794652616.7271595,
+      "timestamp_str": "2026-11-14 13:36:56",
+      "agent": "mistral:vibe",
+      "impact_assessment": {
+        "why": "CSV and latency exports usually carry a header row that today makes every source path die on its first token",
+        "benefits": "one flag on the shared input options covers spark/bars/hist/box/stats; parse_numbers gains a skip_header parameter that drops the first line of the first chunk",
+        "risks": "contract: parse_numbers signature grows by one keyword with a default that keeps every call site identical; dependency: none (stdlib); concurrency: none (pure function); state: README and codebase map must ride the same commit",
+        "mitigation": "default False so existing callers are untouched; refuse the flag with positional values; failing-first tests in test_series and test_cli before the implementation"
+      },
+      "plan_digest": "33b49d8c75ac4055710c4f452d4d5c7123cc06ad43704bee863b1efa9e55923f"
+    },
+    {
+      "task_id": "gauge-delta-0e6341e",
+      "phase": "superseded",
+      "phase_num": 4,
+      "description": "Superseded by 'gauge-skip-header' without --complete or --reset",
+      "status": "superseded",
+      "timestamp": 1794652616.7271595,
+      "timestamp_str": "2026-11-14 13:36:56",
+      "agent": "mistral:vibe",
+      "continued_from": "kilo:gauge-delta"
+    },
+    {
+      "task_id": "gauge-skip-header",
+      "phase": "in_progress",
+      "phase_num": 4,
+      "description": "[2/2] Implemented: parse_numbers skip_header drops the first source line across chunks; --skip-header on the shared input options, refused with positional values; ADR-008 and README table row; 115 tests OK",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794652877.9869258,
+      "timestamp_str": "2026-11-14 13:41:17",
+      "agent": "mistral:vibe",
+      "impact_assessment": {
+        "why": "headered CSVs and tables failed on their first token before this flag",
+        "benefits": "one flag covers spark/bars/hist/box/stats; default behavior byte-identical",
+        "risks": "state: README/map/ADR must ride the same commit; contract: parse_numbers keyword default False keeps call sites unchanged",
+        "mitigation": "failing-first tests proved the gap (8 errors), full triad refusal tested, gates rerun"
+      },
+      "checklists": "passed"
     }
   ]
 }

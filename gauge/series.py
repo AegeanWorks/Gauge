@@ -4,7 +4,7 @@ import math
 import re
 from bisect import bisect_right
 from dataclasses import dataclass
-from typing import Dict, Iterable, List, Optional, Sequence, Tuple
+from typing import Dict, Iterable, Iterator, List, Optional, Sequence, Tuple
 
 _SEPARATOR = re.compile(r"[,\s]+")
 
@@ -59,10 +59,28 @@ class BoxPlot:
     maximum: float
 
 
+def _drop_first_line(chunks: Iterable[str]) -> Iterator[str]:
+    """The chunks with the first source line removed, so a header row is skipped.
+
+    Only one line is dropped in total: a line break may fall inside a chunk or between
+    chunks, so a first chunk that holds no line break is dropped whole.
+    """
+    first = True
+    for chunk in chunks:
+        if first:
+            first = False
+            head, newline, remainder = chunk.partition("\n")
+            if newline:
+                yield remainder
+        else:
+            yield chunk
+
+
 def parse_numbers(
     chunks: Iterable[str],
     field: Optional[int] = None,
     delimiter: Optional[str] = None,
+    skip_header: bool = False,
 ) -> List[float]:
     """
     Every finite number in text chunks, in order.
@@ -71,10 +89,13 @@ def parse_numbers(
     whitespace/commas if None) and the field-th column is parsed.
     When `delimiter` is given without `field`, chunks are split by `delimiter`.
     When neither is given, whitespace and commas separate numbers.
+    With `skip_header`, the first source line is dropped before any of that, so a
+    labelled table or CSV header does not fail the reader.
 
     Raises ValueError naming the first token that is not a finite decimal number, when a
     line has fewer columns than `field`, or when the combined text holds no number at all.
     """
+    chunks = _drop_first_line(chunks) if skip_header else chunks
     if field is not None:
         if field < 1:
             raise ValueError("field must be 1 or greater.")

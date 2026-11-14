@@ -110,6 +110,7 @@ Every reading command accepts the same source arguments:
 | standard input | Read numbers from a pipe when neither of the above is given |
 | `-f N, --field N` | Extract the N-th column from lines (1-indexed) |
 | `-d CHAR, --delimiter CHAR` | Column delimiter (default: whitespace and commas) |
+| `--skip-header` | Drop the first source line, a CSV or table header |
 | `--width N` | Chart width in cells (spark default 60; bars, hist and box default 40) |
 | `--bins N` | Number of equal-width histogram bins, 1 to 100 (hist default 10) |
 | `--percentiles LIST` | Comma-separated percentiles to report (`stats` only) |
@@ -244,6 +245,7 @@ python aikit.py check gauge
 - [ADR-005](.aikit/decisions.md): field and delimiter extraction for structured input.
 - [ADR-006](.aikit/decisions.md): extended percentiles on summary statistics.
 - [ADR-007](.aikit/decisions.md): horizontal 5-number box plot with deterministic glyphs and ASCII twin.
+- [ADR-008](.aikit/decisions.md): header skipping for file and pipe sources.
 
 ### Deliberate limits
 
