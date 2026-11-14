@@ -179,6 +179,16 @@ def golden_path(box: Path, report: Report) -> None:
         ok = False
     report.step(ok, "field and delimiter extraction parses delimited table", f"exit {code}")
 
+    header_file = box / "headered.csv"
+    header_file.write_text("name,ms\na,10\nb,20\nc,30\n", encoding="utf-8")
+    code, out, _ = run_cli(box, "stats", "--file", str(header_file), "-f", "2",
+                           "-d", ",", "--skip-header", "--json")
+    try:
+        ok = code == 0 and json.loads(out)["count"] == 3
+    except (ValueError, KeyError):
+        ok = False
+    report.step(ok, "skip-header reads a headered csv file by field", f"exit {code}")
+
     code, out, _ = run_cli(box, "stats", "10", "20", "30", "--percentiles", "50,90", "--json")
     try:
         data = json.loads(out)
@@ -249,6 +259,10 @@ def chaos(box: Path, report: Report) -> None:
     code, _, err = run_cli(box, "spark", "1", "--file", "values.txt")
     report.step(code == 2 and "both positional" in err,
                 "two input sources are refused", f"exit {code}")
+
+    code, _, err = run_cli(box, "stats", "1", "2", "--skip-header")
+    report.step(code == 2 and "positional numbers have none" in err,
+                "skip-header without a line source is refused", f"exit {code}")
 
     code, _, err = run_cli(box, "stats", "1e308", "1e308")
     report.step(code == 2 and "sum exceeds" in err and "Fix:" in err,

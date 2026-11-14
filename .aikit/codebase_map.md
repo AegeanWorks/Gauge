@@ -10,7 +10,7 @@
 - **Total Classes**: `19`
 - **Total Top-Level Functions**: `45`
 - **Total Class Methods**: `125`
-- **Total Source Lines**: `2050`
+- **Total Source Lines**: `2064`
 
 ## 🧭 Map Coverage
 - **Indexed**: python (`10` module(s))
@@ -281,7 +281,7 @@
 ### [`tools/dogfood.py`](tools/dogfood.py)
 > *Gauge's dogfood runner: use the product as a user does, then attack its input edge.*
 
-**Size**: `303` lines (`12761` bytes)
+**Size**: `317` lines (`13446` bytes)
 
 **Classes:**
 - `class Report` - *Collects step outcomes: the console sees a summary, the log sees everything.*
