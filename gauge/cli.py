@@ -76,6 +76,9 @@ def _read_file(path_text: str, field: Optional[int] = None,
     path = Path(path_text)
     try:
         with open(path, "r", encoding="utf-8") as handle:
+            # The whole-file read is deliberate: a decode error surfaces once with the
+            # Why/Fix triad before any parsing begins.
+            # hygiene: allow review-file-read-unbounded: streaming would split the read from the try.
             text = handle.read()
     except (OSError, UnicodeError) as exc:
         detail = getattr(exc, "strerror", None) or str(exc)

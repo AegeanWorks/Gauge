@@ -10,7 +10,7 @@
 - **Total Classes**: `19`
 - **Total Top-Level Functions**: `44`
 - **Total Class Methods**: `115`
-- **Total Source Lines**: `1930`
+- **Total Source Lines**: `1933`
 
 ## 🧭 Map Coverage
 - **Indexed**: python (`10` module(s))
@@ -37,7 +37,7 @@
 ### [`gauge/cli.py`](gauge/cli.py)
 > *The gauge command line: read one numeric source, then render or summarize it.*
 
-**Size**: `350` lines (`14116` bytes)
+**Size**: `353` lines (`14360` bytes)
 
 **Classes:**
 - `class InputError` - *A request gauge cannot carry out, carrying the Why/Fix remediation triad.*
